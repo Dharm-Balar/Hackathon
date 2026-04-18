@@ -8,12 +8,18 @@ from supabase import create_client
 # ------------------ CONFIG ------------------
 
 app = Flask(__name__)
-CORS(app)  # You can restrict later to your Vercel URL
+CORS(app, origins=["https://codedevora.vercel.app/"])  # You can restrict later to your Vercel URL
 
 # Environment variables
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
+if not GROQ_API_KEY:
+    raise ValueError("GROQ_API_KEY is missing")
+
+if not SUPABASE_URL or not SUPABASE_KEY:
+    raise ValueError("Supabase credentials missing")
 
 # Clients
 groq_client = Groq(api_key=GROQ_API_KEY)
@@ -38,13 +44,22 @@ def process():
 
         # AI Prompt
         prompt = f"""
-        Analyze the following message and convert it into JSON with fields:
-        type (Need/Resource), category, urgency (Low/Medium/High), summary, location, contact.
-
+        You are an API. Convert the message into STRICT JSON.
+        
+        Format:
+        {{
+          "type": "Need or Resource",
+          "category": "",
+          "urgency": "Low/Medium/High",
+          "summary": "",
+          "location": "",
+          "contact": ""
+        }}
+        
+        ONLY return JSON. No explanation.
+        
         Message:
         {user_input}
-
-        Return ONLY JSON.
         """
 
         response = groq_client.chat.completions.create(
@@ -56,8 +71,11 @@ def process():
 
         try:
             parsed = json.loads(ai_output)
-        except:
-            return jsonify({"error": "AI parsing failed", "raw": ai_output}), 500
+        except json.JSONDecodeError:
+            return jsonify({
+                "error": "AI returned invalid JSON",
+                "raw": ai_output
+            }), 500
 
         # Store in DB
         insert_data = {
@@ -111,4 +129,4 @@ def get_requests():
 # ------------------ RUN ------------------
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0", port=5000)
