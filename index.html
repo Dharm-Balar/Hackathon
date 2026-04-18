@@ -1280,16 +1280,18 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ message })
                 });
+
                 const data = await res.json();
                 console.log(data);
 
-                // Example display
+                // ✅ correct error check
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                // display
                 document.getElementById("output").innerText =
                     JSON.stringify(data.ai_data, null, 2);
-
-                if (!res.ok) {
-                    throw new Error("API failed");
-                }
 
                 lastResult = data;
                 lastMessage = message;
@@ -1303,7 +1305,7 @@
                 renderResult(data);
                 showView('results');
             } catch (err) {
-                showError('Could not connect to the server. Please try again.');
+                showError(err.message || 'Something went wrong');
             } finally {
                 btn.disabled = false;
                 btnText.textContent = 'Analyze with AI';
