@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ReachOut — Community Relief</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --blue-900: #0a1628;
+            --blue-800: #0f2040;
+            --blue-700: #1a3a6b;
+            --blue-600: #1e4db7;
+            --blue-500: #2563eb;
+            --blue-400: #3b82f6;
+            --blue-300: #93c5fd;
+            --blue-100: #dbeafe;
+            --blue-50: #eff6ff;
+            --green: #10b981;
+            --orange: #f59e0b;
+            --red: #ef4444;
+            --purple: #8b5cf6;
+            --white: #ffffff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-400: #94a3b8;
+            --gray-600: #475569;
+            --gray-800: #1e293b;
+            --font-display: 'Sora', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 22px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, .07);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, .08);
+            --shadow-blue: 0 8px 32px rgba(37, 99, 235, .25);
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: var(--font-body);
+            background: var(--gray-50);
+            color: var(--gray-800);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        #app {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        .app-header {
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 0 20px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--blue-600);
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .logo-text {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--blue-900);
+            letter-spacing: -0.02em;
+        }
+
+        .logo-text span {
+            color: var(--blue-500);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .board-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--blue-600);
+            background: var(--blue-50);
+            border: 1px solid var(--blue-100);
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .board-btn:hover {
+            background: var(--blue-100);
+        }
+
+        .board-count {
+            background: var(--blue-600);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        /* MAIN */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 36px 20px 60px;
+        }
+
+        /* VIEWS */
+        .view {
+            display: none;
+            width: 100%;
+            max-width: 480px;
+            animation: fadeUp .35s ease both;
+        }
+
+        .view.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* HOME */
+        .home-hero {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--blue-500);
+            background: var(--blue-50);
+            border: 1px solid var(--blue-100);
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-bottom: 18px;
+        }
+
+        .home-hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            font-weight: 700;
+            color: var(--blue-900);
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+            margin-bottom: 12px;
+        }
+
+        .home-hero h1 .highlight {
+            color: var(--blue-500);
+        }
+
+        .home-hero p {
+            font-size: 0.95rem;
+            color: var(--gray-600);
+            line-height: 1.6;
+            max-width: 340px;
+            margin: 0 auto;
+        }
+
+        .role-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .role-card {
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: 26px 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: all .25s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .role-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .role-card:active {
+            transform: translateY(0);
+        }
+
+        .need-card:hover {
+            border-color: var(--red);
+            box-shadow: 0 8px 28px rgba(239, 68, 68, .18);
+        }
+
+        .volunteer-card:hover {
+            border-color: var(--green);
+            box-shadow: 0 8px 28px rgba(16, 185, 129, .18);
+        }
+
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.7rem;
+        }
+
+        .need-card .card-icon {
+            background: #fef2f2;
+        }
+
+        .volunteer-card .card-icon {
+            background: #ecfdf5;
+        }
+
+        .role-card h3 {
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--blue-900);
+        }
+
+        .role-card p {
+            font-size: 0.78rem;
+            color: var(--gray-400);
+            line-height: 1.4;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--blue-600);
+        }
+
+        .stat-label {
+            font-size: 0.68rem;
+            color: var(--gray-400);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 2px;
+        }
+
+        /* FORM */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--gray-600);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px 0;
+            margin-bottom: 24px;
+            transition: color .2s;
+        }
+
+        .back-btn:hover {
+            color: var(--blue-600);
+        }
+
+        .form-header {
+            margin-bottom: 22px;
+        }
+
+        .form-role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+
+        .form-role-badge.need {
+            background: #fef2f2;
+            color: var(--red);
+        }
+
+        .form-role-badge.volunteer {
+            background: #ecfdf5;
+            color: var(--green);
+        }
+
+        .form-header h2 {
+            font-family: var(--font-display);
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: var(--blue-900);
+            letter-spacing: -0.02em;
+            margin-bottom: 6px;
+        }
+
+        .form-header p {
+            font-size: 0.86rem;
+            color: var(--gray-600);
+            line-height: 1.5;
+        }
+
+        .textarea-wrapper {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 170px;
+            padding: 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            color: var(--gray-800);
+            background: var(--white);
+            resize: vertical;
+            outline: none;
+            transition: border-color .2s, box-shadow .2s;
+            line-height: 1.6;
+        }
+
+        textarea::placeholder {
+            color: var(--gray-400);
+        }
+
+        textarea:focus {
+            border-color: var(--blue-500);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, .1);
+        }
+
+        .char-count {
+            position: absolute;
+            bottom: 12px;
+            right: 14px;
+            font-size: 0.7rem;
+            color: var(--gray-400);
+        }
+
+        .hint-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-bottom: 20px;
+        }
+
+        .hint-chip {
+            font-size: 0.73rem;
+            padding: 5px 11px;
+            background: var(--gray-100);
+            color: var(--gray-600);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all .2s;
+            border: 1px solid transparent;
+        }
+
+        .hint-chip:hover {
+            background: var(--blue-50);
+            color: var(--blue-600);
+            border-color: var(--blue-200);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--blue-600);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: var(--font-display);
+            font-size: 0.97rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background: var(--blue-700);
+            box-shadow: var(--shadow-blue);
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid rgba(255, 255, 255, .3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin .7s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* RESULTS */
+        .results-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .success-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 14px;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, .3);
+        }
+
+        .results-header h2 {
+            font-family: var(--font-display);
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--blue-900);
+            letter-spacing: -0.02em;
+        }
+
+        .results-header p {
+            font-size: 0.86rem;
+            color: var(--gray-600);
+            margin-top: 5px;
+        }
+
+        .analysis-card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 20px;
+        }
+
+        .card-top {
+            background: linear-gradient(135deg, var(--blue-900), var(--blue-700));
+            padding: 20px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-top-left .label {
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--blue-300);
+            margin-bottom: 4px;
+        }
+
+        .type-badge {
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .urgency-pill {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .urgency-Critical {
+            background: rgba(239, 68, 68, .2);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, .3);
+        }
+
+        .urgency-High {
+            background: rgba(245, 158, 11, .2);
+            color: #fcd34d;
+            border: 1px solid rgba(245, 158, 11, .3);
+        }
+
+        .urgency-Medium {
+            background: rgba(59, 130, 246, .2);
+            color: #93c5fd;
+            border: 1px solid rgba(59, 130, 246, .3);
+        }
+
+        .urgency-Low {
+            background: rgba(16, 185, 129, .2);
+            color: #6ee7b7;
+            border: 1px solid rgba(16, 185, 129, .3);
+        }
+
+        .card-body {
+            padding: 20px 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .info-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            background: var(--blue-50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+
+        .info-label {
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--gray-400);
+            margin-bottom: 3px;
+        }
+
+        .info-value {
+            font-size: 0.93rem;
+            font-weight: 500;
+            color: var(--gray-800);
+            line-height: 1.5;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--gray-100);
+        }
+
+        .summary-box {
+            background: var(--blue-50);
+            border: 1px solid var(--blue-100);
+            border-radius: var(--radius-sm);
+            padding: 13px 15px;
+        }
+
+        .summary-box .info-label {
+            color: var(--blue-500);
+        }
+
+        .summary-box .info-value {
+            color: var(--blue-900);
+            font-weight: 400;
+        }
+
+        .action-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn-secondary {
+            padding: 13px;
+            background: var(--white);
+            color: var(--blue-600);
+            border: 2px solid var(--blue-200);
+            border-radius: var(--radius-md);
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-secondary:hover {
+            background: var(--blue-50);
+            border-color: var(--blue-400);
+        }
+
+        .btn-primary {
+            padding: 13px;
+            background: var(--blue-600);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-primary:hover {
+            background: var(--blue-700);
+            box-shadow: var(--shadow-blue);
+        }
+
+        .btn-success {
+            background: var(--green);
+        }
+
+        .btn-success:hover {
+            background: #059669 !important;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, .3) !important;
+        }
+
+        /* SAVE TOAST */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: var(--gray-800);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform .35s cubic-bezier(.34, 1.56, .64, 1);
+            z-index: 999;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ERROR */
+        .error-card {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .error-card .error-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .error-card h3 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            color: #b91c1c;
+            margin-bottom: 6px;
+        }
+
+        .error-card p {
+            font-size: 0.85rem;
+            color: #dc2626;
+            line-height: 1.5;
+        }
+
+        /* ===== BOARD VIEW ===== */
+        #view-board {
+            max-width: 600px;
+        }
+
+        .board-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .board-header h2 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--blue-900);
+            letter-spacing: -0.02em;
+        }
+
+        .board-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            background: var(--white);
+            font-family: var(--font-display);
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .tab-btn.active {
+            background: var(--blue-600);
+            color: white;
+            border-color: var(--blue-600);
+        }
+
+        .tab-btn .tab-count {
+            font-size: 0.7rem;
+            background: rgba(255, 255, 255, .25);
+            padding: 1px 6px;
+            border-radius: 10px;
+        }
+
+        .tab-btn:not(.active) .tab-count {
+            background: var(--gray-100);
+            color: var(--gray-600);
+        }
+
+        .board-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .board-empty {
+            text-align: center;
+            padding: 48px 20px;
+            color: var(--gray-400);
+        }
+
+        .board-empty .empty-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+
+        .board-empty h3 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            margin-bottom: 6px;
+        }
+
+        .board-empty p {
+            font-size: 0.82rem;
+            line-height: 1.5;
+        }
+
+        .board-card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            transition: box-shadow .2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .board-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .board-card-accent {
+            width: 4px;
+            flex-shrink: 0;
+            border-radius: 4px;
+            align-self: stretch;
+        }
+
+        .accent-Need {
+            background: var(--red);
+        }
+
+        .accent-Resource {
+            background: var(--green);
+        }
+
+        .board-card-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .board-card-top {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+
+        .bc-category {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+        }
+
+        .bc-urgency {
+            font-size: 0.66rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+        }
+
+        .bc-urgency-Critical {
+            background: #fef2f2;
+            color: var(--red);
+        }
+
+        .bc-urgency-High {
+            background: #fffbeb;
+            color: #d97706;
+        }
+
+        .bc-urgency-Medium {
+            background: var(--blue-50);
+            color: var(--blue-600);
+        }
+
+        .bc-urgency-Low {
+            background: #ecfdf5;
+            color: var(--green);
+        }
+
+        .bc-time {
+            font-size: 0.68rem;
+            color: var(--gray-400);
+            margin-left: auto;
+        }
+
+        .bc-summary {
+            font-size: 0.85rem;
+            color: var(--gray-800);
+            line-height: 1.5;
+        }
+
+        .bc-type-badge {
+            font-size: 0.68rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .bc-type-Need {
+            background: #fef2f2;
+            color: var(--red);
+        }
+
+        .bc-type-Resource {
+            background: #ecfdf5;
+            color: var(--green);
+        }
+
+        .bc-delete {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--gray-400);
+            cursor: pointer;
+            font-size: 0.85rem;
+            padding: 4px;
+            border-radius: 4px;
+            transition: color .2s, background .2s;
+        }
+
+        .bc-delete:hover {
+            color: var(--red);
+            background: #fef2f2;
+        }
+
+        .clear-btn {
+            font-size: 0.78rem;
+            color: var(--red);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background .2s;
+        }
+
+        .clear-btn:hover {
+            background: #fef2f2;
+        }
+
+        /* FOOTER */
+        .app-footer {
+            background: var(--white);
+            border-top: 1px solid var(--gray-200);
+            padding: 14px 24px;
+            text-align: center;
+            font-size: 0.72rem;
+            color: var(--gray-400);
+        }
+
+        .app-footer a {
+            color: var(--blue-500);
+            text-decoration: none;
+        }
+
+        @media (max-width: 400px) {
+            .role-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .action-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-bar {
+                gap: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo" onclick="showView('home')">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path
+                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                    </svg>
+                </div>
+                <span class="logo-text">Reach<span>Out</span></span>
+            </div>
+            <div class="header-right">
+                <button class="board-btn" onclick="showView('board')">
+                    📋 Board <span class="board-count" id="board-count">0</span>
+                </button>
+            </div>
+        </header>
+
+        <main class="main-content">
+
+            <!-- HOME VIEW -->
+            <section id="view-home" class="view active">
+                <div class="home-hero">
+                    <div class="eyebrow">🤝 Community Relief Network</div>
+                    <h1>Connect Help with <span class="highlight">Those Who Need It</span></h1>
+                    <p>AI-powered matching between people in need and community volunteers.</p>
+                </div>
+                <div class="role-cards">
+                    <div class="role-card need-card" onclick="selectRole('needer')">
+                        <div class="card-icon">🆘</div>
+                        <div>
+                            <h3>I Need Help</h3>
+                            <p>Request food, shelter, medical aid, and more</p>
+                        </div>
+                    </div>
+                    <div class="role-card volunteer-card" onclick="selectRole('volunteer')">
+                        <div class="card-icon">💪</div>
+                        <div>
+                            <h3>I Want to Volunteer</h3>
+                            <p>Offer your resources, skills, or time</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="stats-bar">
+                    <div class="stat">
+                        <div class="stat-number" id="stat-total">0</div>
+                        <div class="stat-label">Saved</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" id="stat-needs">0</div>
+                        <div class="stat-label">Needs</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" id="stat-resources">0</div>
+                        <div class="stat-label">Resources</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FORM VIEW -->
+            <section id="view-form" class="view">
+                <button class="back-btn" onclick="showView('home')">← Back</button>
+                <div class="form-header">
+                    <div id="form-role-badge" class="form-role-badge"></div>
+                    <h2 id="form-title">Describe your situation</h2>
+                    <p id="form-subtitle">Be as detailed as possible — our AI will categorize it automatically.</p>
+                </div>
+                <div class="hint-chips" id="hint-chips"></div>
+                <div class="textarea-wrapper">
+                    <textarea id="user-message" placeholder="Type your message here..." maxlength="1000"
+                        oninput="updateCharCount()"></textarea>
+                    <span class="char-count" id="char-count">0 / 1000</span>
+                </div>
+                <button class="submit-btn" id="submit-btn" onclick="submitRequest()">
+                    <span id="btn-text">Analyze with AI</span>
+                </button>
+            </section>
+
+            <!-- RESULTS VIEW -->
+            <section id="view-results" class="view">
+                <div class="results-header">
+                    <div class="success-icon">✅</div>
+                    <h2>Analysis Complete</h2>
+                    <p>Here's what our AI extracted from your message.</p>
+                </div>
+                <div id="result-container"></div>
+                <div class="action-row">
+                    <button class="btn-secondary" onclick="showView('form')">✏️ Edit</button>
+                    <button class="btn-primary btn-success" id="save-btn" onclick="saveRequest()">💾 Save to
+                        Board</button>
+                </div>
+            </section>
+
+            <!-- BOARD VIEW -->
+            <section id="view-board" class="view">
+                <div class="board-header">
+                    <div>
+                        <button class="back-btn" style="margin-bottom:4px" onclick="showView('home')">← Back</button>
+                        <h2>📋 Requests Board</h2>
+                    </div>
+                    <button class="clear-btn" onclick="clearAll()">🗑 Clear All</button>
+                </div>
+
+                <div class="board-tabs">
+                    <button class="tab-btn active" id="tab-all" onclick="switchTab('all')">
+                        All <span class="tab-count" id="tc-all">0</span>
+                    </button>
+                    <button class="tab-btn" id="tab-Need" onclick="switchTab('Need')">
+                        🆘 Needs <span class="tab-count" id="tc-Need">0</span>
+                    </button>
+                    <button class="tab-btn" id="tab-Resource" onclick="switchTab('Resource')">
+                        💪 Resources <span class="tab-count" id="tc-Resource">0</span>
+                    </button>
+                </div>
+
+                <div class="board-list" id="board-list"></div>
+            </section>
+
+        </main>
+
+        <footer class="app-footer">
+            Built for Community Relief · Powered by Groq + Llama 3.3 · <a href="#" onclick="showView('board')">View
+                Board →</a>
+        </footer>
+    </div>
+
+    <!-- Toast notification -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ========== STATE ==========
+        let currentRole = null;
+        let lastResult = null;
+        let lastMessage = null;
+        let currentTab = 'all';
+
+        const STORAGE_KEY = 'reachout_requests';
+
+        // ========== STORAGE HELPERS ==========
+        function loadRequests() {
+            try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+            catch { return []; }
+        }
+
+        function saveRequests(list) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+            updateCounters();
+        }
+
+        // ========== COUNTERS ==========
+        function updateCounters() {
+            const list = loadRequests();
+            const needs = list.filter(r => r.type === 'Need').length;
+            const resources = list.filter(r => r.type === 'Resource').length;
+
+            document.getElementById('board-count').textContent = list.length;
+            document.getElementById('stat-total').textContent = list.length;
+            document.getElementById('stat-needs').textContent = needs;
+            document.getElementById('stat-resources').textContent = resources;
+
+            document.getElementById('tc-all').textContent = list.length;
+            document.getElementById('tc-Need').textContent = needs;
+            document.getElementById('tc-Resource').textContent = resources;
+        }
+
+        // ========== VIEW MANAGEMENT ==========
+        function showView(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            const target = document.getElementById('view-' + viewId);
+            target.classList.add('active');
+            target.style.animation = 'none';
+            target.offsetHeight;
+            target.style.animation = '';
+            if (viewId === 'board') renderBoard();
+            updateCounters();
+        }
+
+        // ========== HINTS ==========
+        const HINTS = {
+            needer: ["🍞 Need food supplies", "🏠 Lost my shelter", "💊 Medical assistance", "🚗 Need transportation", "👕 Clothing for kids", "💡 Utilities cut off"],
+            volunteer: ["🍱 Can provide meals", "🏠 Have spare room", "🚗 Can drive people", "💊 Medical background", "👩‍💻 Offering skills", "📦 Have supplies to donate"]
+        };
+
+        function selectRole(role) {
+            currentRole = role;
+            const badge = document.getElementById('form-role-badge');
+            const title = document.getElementById('form-title');
+            const subtitle = document.getElementById('form-subtitle');
+            const chips = document.getElementById('hint-chips');
+
+            if (role === 'needer') {
+                badge.className = 'form-role-badge need';
+                badge.textContent = '🆘 Seeking Help';
+                title.textContent = 'What do you need help with?';
+                subtitle.textContent = 'Describe your situation. Our AI will categorize and prioritize it.';
+            } else {
+                badge.className = 'form-role-badge volunteer';
+                badge.textContent = '💪 Volunteering';
+                title.textContent = 'What can you offer?';
+                subtitle.textContent = 'Describe what resources, skills, or time you can give.';
+            }
+
+            chips.innerHTML = HINTS[role].map(h =>
+                `<span class="hint-chip" onclick="fillHint('${h.replace(/'/g, "\\'")}')">${h}</span>`
+            ).join('');
+
+            document.getElementById('user-message').value = '';
+            updateCharCount();
+            showView('form');
+        }
+
+        function fillHint(text) {
+            const ta = document.getElementById('user-message');
+            ta.value = text.replace(/^\S+\s/, '').trim();
+            ta.focus();
+            updateCharCount();
+        }
+
+        function updateCharCount() {
+            document.getElementById('char-count').textContent =
+                `${document.getElementById('user-message').value.length} / 1000`;
+        }
+
+        // ========== API CALL ==========
+        async function submitRequest() {
+            const message = document.getElementById('user-message').value.trim();
+            if (!message) {
+                const ta = document.getElementById('user-message');
+                ta.focus(); ta.style.borderColor = 'var(--red)';
+                setTimeout(() => ta.style.borderColor = '', 2000);
+                return;
+            }
+
+            const btn = document.getElementById('submit-btn');
+            const btnText = document.getElementById('btn-text');
+            btn.disabled = true;
+            btnText.textContent = 'Analyzing...';
+            btn.insertAdjacentHTML('afterbegin', '<div class="spinner"></div>');
+
+            try {
+                const res = await fetch('https://ai-rescue-backend.onrender.com/process', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                });
+                const data = await res.json();
+                console.log(data);
+
+                // Example display
+                document.getElementById("output").innerText =
+                    JSON.stringify(data.ai_data, null, 2);
+
+                if (!res.ok) {
+                    throw new Error("API failed");
+                }
+
+                lastResult = data;
+                lastMessage = message;
+
+                // Reset save button
+                const saveBtn = document.getElementById('save-btn');
+                saveBtn.textContent = '💾 Save to Board';
+                saveBtn.disabled = false;
+                saveBtn.className = 'btn-primary btn-success';
+
+                renderResult(data);
+                showView('results');
+            } catch (err) {
+                showError('Could not connect to the server. Make sure Flask is running on port 5000.');
+            } finally {
+                btn.disabled = false;
+                btnText.textContent = 'Analyze with AI';
+                const sp = btn.querySelector('.spinner');
+                if (sp) sp.remove();
+            }
+        }
+
+        // ========== RENDER RESULT ==========
+        const CAT_ICONS = { Food: '🍞', Medical: '💊', Shelter: '🏠', Transportation: '🚗', 'Mental Health': '🧠', Clothing: '👕', Utilities: '⚡', General: '📦' };
+        const TYPE_ICONS = { Need: '🆘', Resource: '🤝' };
+
+        function renderResult(data) {
+            const icon = CAT_ICONS[data.category] || '📦';
+            const typeIcon = TYPE_ICONS[data.type] || '📋';
+            document.getElementById('result-container').innerHTML = `
+      <div class="analysis-card">
+        <div class="card-top">
+          <div class="card-top-left">
+            <div class="label">Request Type</div>
+            <div class="type-badge">${typeIcon} ${data.type}</div>
+          </div>
+          <span class="urgency-pill urgency-${data.urgency}">${data.urgency}</span>
+        </div>
+        <div class="card-body">
+          <div class="info-row">
+            <div class="info-icon">${icon}</div>
+            <div><div class="info-label">Category</div><div class="info-value">${data.category}</div></div>
+          </div>
+          <div class="divider"></div>
+          <div class="summary-box">
+            <div class="info-label">AI Summary</div>
+            <div class="info-value">${data.summary}</div>
+          </div>
+        </div>
+      </div>`;
+        }
+
+        function showError(message) {
+            document.getElementById('result-container').innerHTML = `
+      <div class="error-card">
+        <div class="error-icon">⚠️</div>
+        <h3>Something went wrong</h3>
+        <p>${message}</p>
+      </div>`;
+            showView('results');
+        }
+
+        // ========== SAVE TO BOARD ==========
+        function saveRequest() {
+            if (!lastResult) return;
+
+            const record = {
+                id: Date.now(),
+                ...lastResult,
+                role: currentRole,
+                message: lastMessage,
+                savedAt: new Date().toISOString()
+            };
+
+            const list = loadRequests();
+            list.unshift(record); // newest first
+            saveRequests(list);
+
+            // Update save button
+            const saveBtn = document.getElementById('save-btn');
+            saveBtn.textContent = '✅ Saved!';
+            saveBtn.disabled = true;
+
+            showToast('✅ Saved to board!');
+            updateCounters();
+        }
+
+        // ========== BOARD RENDER ==========
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + tab).classList.add('active');
+            renderBoard();
+        }
+
+        function renderBoard() {
+            const all = loadRequests();
+            const list = currentTab === 'all' ? all : all.filter(r => r.type === currentTab);
+            const el = document.getElementById('board-list');
+
+            if (list.length === 0) {
+                const emptyMsg = currentTab === 'all'
+                    ? 'No requests saved yet. Submit a request to see it here.'
+                    : `No ${currentTab === 'Need' ? 'needs' : 'resources'} saved yet.`;
+                el.innerHTML = `
+        <div class="board-empty">
+          <div class="empty-icon">${currentTab === 'Need' ? '🆘' : currentTab === 'Resource' ? '💪' : '📋'}</div>
+          <h3>Nothing here yet</h3>
+          <p>${emptyMsg}</p>
+        </div>`;
+                return;
+            }
+
+            el.innerHTML = list.map(r => {
+                const icon = CAT_ICONS[r.category] || '📦';
+                const timeAgo = getTimeAgo(r.savedAt);
+                return `
+        <div class="board-card" id="card-${r.id}">
+          <div class="board-card-accent accent-${r.type}"></div>
+          <div class="board-card-body">
+            <div class="board-card-top">
+              <span class="bc-type-badge bc-type-${r.type}">${TYPE_ICONS[r.type]} ${r.type}</span>
+              <span class="bc-category">${icon} ${r.category}</span>
+              <span class="bc-urgency bc-urgency-${r.urgency}">${r.urgency}</span>
+              <span class="bc-time">${timeAgo}</span>
+            </div>
+            <div class="bc-summary">${r.summary}</div>
+          </div>
+          <button class="bc-delete" onclick="deleteRequest(${r.id})" title="Delete">✕</button>
+        </div>`;
+            }).join('');
+        }
+
+        function deleteRequest(id) {
+            const list = loadRequests().filter(r => r.id !== id);
+            saveRequests(list);
+            renderBoard();
+            updateCounters();
+            showToast('🗑️ Deleted');
+        }
+
+        function clearAll() {
+            if (!confirm('Clear all saved requests?')) return;
+            saveRequests([]);
+            renderBoard();
+            showToast('🗑️ All cleared');
+        }
+
+        // ========== HELPERS ==========
+        function getTimeAgo(iso) {
+            const diff = Math.floor((Date.now() - new Date(iso)) / 1000);
+            if (diff < 60) return 'just now';
+            if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+            if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+            return `${Math.floor(diff / 86400)}d ago`;
+        }
+
+        let toastTimer;
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+        }
+
+        // ========== INIT ==========
+        updateCounters();
+    </script>
+</body>
+
+</html>
