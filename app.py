@@ -4,12 +4,12 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from groq import Groq
 from supabase import create_client
-
+import re
 # ------------------ CONFIG ------------------
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
-# CORS(app, origins=["https://codedevora.vercel.app/"])  # You can restrict later to your Vercel URL
+# C ORS(app, origins=["https://codedevora.vercel.app/"])  # You can restrict later to your Vercel URL
 
 # Environment variables
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
@@ -45,9 +45,11 @@ def process():
 
         # AI Prompt
         prompt = f"""
-        You are an API. Convert the message into STRICT JSON.
+        Return ONLY valid JSON.
         
-        Format:
+        No explanation. No extra text.
+        
+        Format strictly:
         {{
           "type": "Need or Resource",
           "category": "",
@@ -56,8 +58,6 @@ def process():
           "location": "",
           "contact": ""
         }}
-        
-        ONLY return JSON. No explanation.
         
         Message:
         {user_input}
@@ -68,13 +68,26 @@ def process():
             messages=[{"role": "user", "content": prompt}],
         )
 
-        ai_output = response.choices[0].message.content.strip()
+        
 
+        ai_output = response.choices[0].message.content.strip()
+        
+        # Extract JSON using regex (VERY IMPORTANT)
+        match = re.search(r"\{.*\}", ai_output, re.DOTALL)
+        
+        if not match:
+            return jsonify({
+                "error": "No JSON found",
+                "raw": ai_output
+            }), 500
+        
+        json_str = match.group()
+        
         try:
-            parsed = json.loads(ai_output)
+            parsed = json.loads(json_str)
         except json.JSONDecodeError:
             return jsonify({
-                "error": "AI returned invalid JSON",
+                "error": "Invalid JSON format",
                 "raw": ai_output
             }), 500
 
