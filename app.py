@@ -8,7 +8,8 @@ from supabase import create_client
 # ------------------ CONFIG ------------------
 
 app = Flask(__name__)
-CORS(app, origins=["https://codedevora.vercel.app/"])  # You can restrict later to your Vercel URL
+CORS(app, resources={r"/*": {"origins": "*"}})
+# CORS(app, origins=["https://codedevora.vercel.app/"])  # You can restrict later to your Vercel URL
 
 # Environment variables
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
