@@ -1277,9 +1277,7 @@
     `).join("")}
   `;
             }
-            if (data.ai_data.urgency === "High") {
-                    alert("🚨 High urgency case detected!");
-                }
+            
         
         // ========== API CALL ==========
         async function submitRequest() {
@@ -1331,6 +1329,10 @@
 
                     const matchData = await res2.json();
 
+                    if (data.ai_data.urgency === "High") {
+                    alert("🚨 High urgency case detected!");
+                }
+                    
                     showMatches(matchData.matches);
                 }
             } catch (err) {
