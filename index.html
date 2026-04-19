@@ -1284,16 +1284,12 @@
                 const data = await res.json();
                 console.log(data);
 
-                // ✅ correct error check
+                // error check
                 if (data.error) {
                     throw new Error(data.error);
                 }
 
-                // display
-                document.getElementById("output").innerText =
-                    JSON.stringify(data.ai_data, null, 2);
-
-                lastResult = data;
+                lastResult = data.ai_data;
                 lastMessage = message;
 
                 // Reset save button
@@ -1302,7 +1298,8 @@
                 saveBtn.disabled = false;
                 saveBtn.className = 'btn-primary btn-success';
 
-                renderResult(data);
+                // ✅ FIXED
+                renderResult(data.ai_data);
                 showView('results');
             } catch (err) {
                 showError(err.message || 'Something went wrong');
