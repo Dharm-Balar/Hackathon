@@ -1258,6 +1258,29 @@
                 `${document.getElementById('user-message').value.length} / 1000`;
         }
 
+        function showMatches(matches) {
+                const container = document.getElementById("result-container");
+
+                if (!matches.length) {
+                    container.innerHTML += `<p style="margin-top:15px;color:gray;">No volunteers found yet.</p>`;
+                    return;
+                }
+
+                container.innerHTML += `
+    <h3 style="margin-top:20px;">🤝 Available Volunteers</h3>
+    ${matches.map(v => `
+      <div style="padding:10px;border:1px solid #ddd;margin-top:8px;border-radius:8px;">
+        <strong>${v.summary}</strong><br/>
+        📍 ${v.location}<br/>
+        📞 ${v.contact}
+      </div>
+    `).join("")}
+  `;
+            }
+            if (data.ai_data.urgency === "High") {
+                    alert("🚨 High urgency case detected!");
+                }
+        
         // ========== API CALL ==========
         async function submitRequest() {
             const message = document.getElementById('user-message').value.trim();
@@ -1301,6 +1324,15 @@
                 // ✅ FIXED
                 renderResult(data.ai_data);
                 showView('results');
+                if (data.ai_data.type === "Need") {
+                    const res2 = await fetch(
+                        `https://ai-rescue-backend.onrender.com/match/${data.ai_data.category}`
+                    );
+
+                    const matchData = await res2.json();
+
+                    showMatches(matchData.matches);
+                }
             } catch (err) {
                 showError(err.message || 'Something went wrong');
             } finally {
